@@ -19,5 +19,18 @@ function add() {
     li.classList.add("list-group-item"); //addでクラスを追加（スタイルをあてるため）
     ul.appendChild(li); //ulタグの子要素としてliを追加
     input.value = ""; //空にすることで使いやすく
+    saveData();
   }
 };
+
+//データをとってきてローカルストレージ(ブラウザ)に保存
+function saveData() {
+  const lists = document.querySelectorAll("li"); //liのリストを定義
+  let todos = [];
+  //繰り返すことで配列の全要素を取得し、todosに格納
+  lists.forEach(list => {
+    todos.push(list.innerText);
+  });
+  //JSONに変換して保存
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
