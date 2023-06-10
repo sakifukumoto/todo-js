@@ -2,7 +2,7 @@ const form = document.getElementById("form");
 const input = document.getElementById("input");
 const ul = document.getElementById("ul");
 
-//ローカルストレージに保存されているデータをJSON形式で取得
+//ローカルストレージに保存されているデータをJSON形式で取得（画面をリロードしたときもtodoが消えないように）
 const todos = JSON.parse(localStorage.getItem("todos"));
 
 //todosがtrueだったらliタグを追加する
@@ -25,13 +25,23 @@ function add(todo) {
   //todoがあったときはtodoの値でliタグをつくりたいのでtodoをtodoTextに代入
   if(todo) {
     todoText = todo;
-  }
+  };
 
   //入力フォームに値が入力されているとき（文字数が0より大きい）→入力フォームに値が入っていないときにエンターを押しても反映されなくなる
-  if(todoText.length > 0) {
+  if(todoText) {
     const li = document.createElement("li"); //liタグをつくる
     li.innerText = todoText; //input.valueをとってきてinnerTextに代入
-    li.classList.add("list-group-item"); //addでクラスを追加（スタイルをあてるため）
+    li.classList.add("list-group-item"); //addでクラスを追加（スタイルをあてるため
+
+    //右クリックされたとき
+    li.addEventListener("contextmenu", function(event) {
+      //通常右クリックしたときにでてくるメニューを出さないようにする
+      event.preventDefault();
+      //liを削除
+      li.remove();
+      //ローカルストレージにも削除を反映させる
+      saveData();
+    });
     ul.appendChild(li); //ulタグの子要素としてliを追加
     input.value = ""; //空にすることで使いやすく
     saveData();
