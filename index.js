@@ -33,7 +33,7 @@ function add(todo) {
     li.innerText = todoText; //input.valueをとってきてinnerTextに代入
     li.classList.add("list-group-item"); //addでクラスを追加（スタイルをあてるため
 
-    //右クリックされたとき
+    //右クリックされたときtodoを削除
     li.addEventListener("contextmenu", function(event) {
       //通常右クリックしたときにでてくるメニューを出さないようにする
       event.preventDefault();
@@ -41,6 +41,12 @@ function add(todo) {
       li.remove();
       //ローカルストレージにも削除を反映させる
       saveData();
+    });
+
+    //完了したtodoをクリックしたら打ち消し線をつけて完了にする
+    li.addEventListener("click", function() {
+      //liのクラスに対してトグル（切り替え）を設定→なかったらつける、あったらつけない
+      li.classList.toggle("text-decoration-line-through");
     });
     ul.appendChild(li); //ulタグの子要素としてliを追加
     input.value = ""; //空にすることで使いやすく
